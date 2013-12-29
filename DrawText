@@ -1,0 +1,70 @@
+DrawText = class()
+
+function DrawText:init(words, yesNo)
+    -- you can accept and set parameters here
+    self.words = words
+    self.yesNo = yesNo
+end
+
+function DrawText:draw()
+    -- Codea does not automatically call this method
+fill(40,40,50)
+rectMode(CENTER)
+
+
+strokeWidth(5)
+stroke(255,255,255)
+rect(WIDTH-200,HEIGHT-100,215,150)
+
+font("Georgia")
+fill(255)
+fontSize(20)
+textWrapWidth(200)
+textMode(CENTER)
+text(self.words, WIDTH-200, HEIGHT-100)
+
+    if self.yesNo == true then
+        fill(100,100,100)
+        ellipse(WIDTH/2-150,100,100,100)
+        
+        ellipse(WIDTH/2+150,100,100,100)
+        
+       -- noFill()
+       -- strokeWidth(5)
+       -- stroke(255,255,255)
+        
+        --rect(WIDTH-310,HEIGHT-210,215,150)
+        --textMode()
+        fill(255,255,255)
+        text("Yes",WIDTH/2-150,100)
+        text("No",WIDTH/2+150,100)
+        --print("true")
+    
+    end
+
+end
+
+function DrawText:touched(touch)
+    -- Codea does not automatically call this method
+    if DrawText:CheckForTouchInCircle(touch.x,touch.y,WIDTH/2-150,100) then
+        return "yes"
+        end
+        
+    if DrawText:CheckForTouchInCircle(touch.x,touch.y,WIDTH/2+150,100) then
+        return "no"
+        end
+    
+end
+
+function DrawText:CheckForTouchInCircle(touchX ,touchY,circleX,circleY)
+    local distance = 0
+    
+    distance = math.sqrt(((touchX-circleX)^2) + ((touchY-circleY)^2))
+    
+    if distance <= 50 then 
+    return true
+    else 
+    return false
+    end
+end
+    
