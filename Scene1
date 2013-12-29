@@ -1,0 +1,137 @@
+function Scene1Setup()
+    
+    question = DrawText("Now Bit, you have an important decision to make.  Do you jump off the cliff?", true)
+
+    walkToSafety = DrawText("Well done.  A sound and safe decision. Bit lived happily ever after.  THE END", false)
+    wts2 = DrawText("No, no, no. This can't be the end. What kind of story would that be? Here let me help you just a 'bit'.")
+    
+    jump = DrawText("What!? Bad bit. What kind of bit willingly jumps off a cliff! Oh this is not good. Not good at all.") 
+    jump2 = DrawText("Oh wait, I understand now. I am sorry. I didn't realize you were an 'odd' parity bit. Well done!")
+    
+    cloudX = WIDTH/2
+    cloudX2 = 0
+    sceneTimer = 0
+    
+    playerY = HEIGHT/2+50
+    sprite1 = true
+    x=0
+    y=0
+    
+end
+        
+function Scene1()
+     --background(0, 109, 255, 255)
+    
+    
+
+    background(0, 159, 255, 255)
+   -- sprite("Dropbox:sky2",WIDTH/2,HEIGHT/2,WIDTH, HEIGHT)
+    sprite("Platformer Art:Cloud 2", cloudX, HEIGHT-150)
+    sprite("Platformer Art:Cloud 2", cloudX2, HEIGHT/2-150)
+    --sprite("Dropbox:Cliff2", 120, HEIGHT/2)
+    sprite("Platformer Art:Block Grass", 100, HEIGHT/2-23,260,80)
+    
+    
+    if sprite1 == true then
+    sprite("Platformer Art:Guy Look Right", playerX, HEIGHT/2+50, 50)
+    end
+
+   -- sprite("Platformer Art:Block Grass",50,400)
+    
+    --walk to edge of cliff
+    if sceneTimer < 210 then
+    playerX = playerX + 1
+    end
+    
+    --ask a question
+    if sceneTimer == 210 then
+       
+         question:draw()
+      
+        pause = true
+        
+        if(CurrentTouch.state==BEGAN) then
+        response =  question:touched(CurrentTouch)
+        
+        if response == "yes" then
+            pause = false
+            print("yes")
+            end
+        if response == "no" then
+            pause = false
+            print("no")
+            end
+        end
+    end
+    
+    --now the fun begins
+    
+    --if the answer is no walk to safety
+    if response == "no" then
+        if sceneTimer > 210 and sceneTimer < 350 then
+        
+            playerX = playerX - 1
+        
+        end
+    --tell Bit he is about to be punched off the cliff.
+        if sceneTimer >= 350 and sceneTimer < 650 then 
+            --pause = true
+            walkToSafety:draw()
+        end
+        
+        if sceneTimer >= 700 and sceneTimer < 1100 then
+            wts2:draw()
+        end
+        
+        if sceneTimer >= 1150 and sceneTimer < 1300 then
+            sprite("Tyrian Remastered:Mine Spiked Huge", 25, HEIGHT/2+37)
+        end
+        
+        if sceneTimer >= 1300 and sceneTimer < 1500 then
+            sprite("Tyrian Remastered:Explosion Huge", 25, HEIGHT/2+37)
+            
+        end
+        if sceneTimer >= 1300 and sceneTimer < 1600 then
+            sprite1 = false
+            sprite("Platformer Art:Guy Jump", playerX + x, HEIGHT/2+37+y)
+            --playerX = playerX + 2
+            x = x + 3
+            y = 1.75*x - .01*x*x
+            --playerY = playerY + .015*(playerX-210)-.01178*playerX*playerX
+        end     
+        if sceneTimer >= 1700 then
+            scene1Playing = false
+        end
+        
+    end --end of response == no
+    
+    
+    if response == "yes" then
+        if sceneTimer > 210 and sceneTimer < 350 then
+            sprite1 = false
+            sprite("Platformer Art:Guy Jump", playerX + x, HEIGHT/2+37+y)
+            --playerX = playerX + 2
+            x = x + 3
+            y = 1.75*x - .01*x*x
+        end
+        if sceneTimer >= 350 and sceneTimer < 650 then
+            jump:draw()
+        end
+        if sceneTimer >= 750 and sceneTimer < 1150 then
+            jump2:draw()
+        end
+        if sceneTimer >= 1350 then
+            scene1Playing = false
+            return
+        end 
+    end 
+    if pause == false then
+        sceneTimer = sceneTimer + 1
+    end
+    
+    cloudX = cloudX - 1
+    cloudX2 = cloudX2 -1
+    if cloudX < -100 then cloudX = WIDTH+100;end
+    if cloudX2 < -100 then cloudX2 = WIDTH+100;end
+    
+end
