@@ -1,0 +1,108 @@
+-- bit not the byte
+
+-- Use this function to perform your initial setup
+function setup()
+    sceneTimer = 0
+    playerX = 0
+    playerY = 0
+    loopY = 0
+    pause = false
+    response = nil
+    lastResponse = nil
+    theEnd = false
+   -- scene1Playing = true
+    scene1Playing = true
+    scene2Playing = false
+    scene3Playing = false
+   -- scene2Playing = false
+    spikedEndScenePlaying = false
+    
+    Scene1Setup()
+    
+    scene2SetupComplete = false
+    scene3SetupComplete = false
+    
+    
+    --delete when done? 
+    drawPlayer = true
+end
+
+
+-- This function gets called once every frame
+function draw()
+    
+    --sound(SOUND_JUMP, 18996)
+    -- This sets a dark background color 
+   if scene1Playing == true then
+      Scene1()
+     lastResponse = response
+   end
+   
+   if scene1Playing == false and scene3Playing == false then 
+   scene2Playing = true
+   end
+
+    if scene2Playing == true then
+       Scene2()
+    end
+    
+    if spikedEndScenePlaying == true then
+        SpikedSceneEnding()
+    end
+
+    if scene1Playing == false and scene2Playing == false then
+        scene3Playing = true
+    end
+    
+    if scene3Playing == true and spikedEndScenePlaying == false then
+        Scene3()
+    end
+
+end
+
+
+function SpikedSceneEnding()
+  -- print(drawPlayer)
+    background(0, 0, 0, 255)
+    sprite("Platformer Art:Spikes",WIDTH/2,100,200)
+
+
+        pushMatrix()
+        --radians = math.rad(angle)
+        translate(WIDTH/2,HEIGHT-loopY)
+        rotate(270)
+    
+          
+            sprite("Platformer Art:Guy Jump")
+            
+    
+
+        popMatrix()
+    
+        if theEnd == true then
+            
+        font("Georgia")
+        fill(255)
+        fontSize(20)
+        textWrapWidth(400)
+        textMode(CENTER)     
+        text("The End.", WIDTH/2, HEIGHT - HEIGHT/4)
+        text("Let's keep this G rated shall we?",WIDTH/2, HEIGHT - HEIGHT/4-50)
+        text("Many thanks to all those who helped make the competiton happen and the codea app work", WIDTH/2, HEIGHT - HEIGHT/4-125)
+       -- text("No thanks whatsoever to you the user who seem to enjoy sending innocent bits to an untimely demise =)",WIDTH/2, HEIGHT - HEIGHT/4-200)
+        
+        
+        
+        
+        end
+    
+    
+        sceneTimer = sceneTimer + 1    
+        
+        if HEIGHT-loopY > 150 then
+        loopY = loopY + 5
+        else 
+        theEnd = true
+        end
+        
+end
