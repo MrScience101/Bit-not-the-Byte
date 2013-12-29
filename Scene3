@@ -1,0 +1,152 @@
+function Scene3Setup()
+    
+    time = DrawText("Today's date: November 30th, 2011")
+    finalQ1 = DrawText("Bit. This is it. Your answer here determines if you join others to form a fully functioning byte.")
+    finalQ2 = DrawText("Answer carefully. What do you get when you combine great code and a great idea?", true)
+    
+    finalQ3y = DrawText("Codea. Well done Bit. Exactly right. You successfully read my mind and answered correctly. You truly are amazing.")
+    
+    finalQ3n = DrawText("Ah, no. You were supposed to read my mind and know the answer to that ambigious question. 50/50/90 I know.")
+    
+    
+    sceneTimer = 0
+    scaleTimer = 1.0
+    pause = false
+    angle = 90
+    
+    cloudX = WIDTH/2
+    cloudX2 = 0
+    showCodea = false
+
+    scaredSprite = false
+    response = nil
+    response2 = nil
+    drawPack = false
+    drawPlayer = true
+    drawWarp = false
+    drawDroppingBox = false
+    droppingBoxTimer = 0
+    droppingBoxY = 0
+
+    scene3SetupComplete = true  
+    
+end
+
+function Scene3()
+    
+    --run once and only once
+    if scene3SetupComplete == false then
+        Scene3Setup()
+    end
+    
+    background(0, 159, 255, 255)
+    sprite("Platformer Art:Cloud 2", cloudX, HEIGHT-150)
+    sprite("Platformer Art:Cloud 2", cloudX2, HEIGHT/2)
+    
+    spriteMode(CORNER)
+    
+    sprite("Platformer Art:Guy Look Right",WIDTH/4, 190)
+    sprite("Cargo Bot:Codea Icon", WIDTH/2, 164, 200)
+    
+    if drawDroppingBox == true then
+        
+        sprite("Cargo Bot:Codea Icon",WIDTH/4-50,droppingBoxY, 200)
+        droppingBoxY = HEIGHT-droppingBoxTimer
+        
+    end
+    --sprite("Cargo Bot:Codea Icon", WIDTH - WIDTH/4-100, 70, 200)
+    
+    sprite("Platformer Art:Block Grass", 0, -30,WIDTH,220)
+    
+    
+    spriteMode(CENTER)
+    if showCodea == true then
+        sprite("Cargo Bot:Codea Logo", WIDTH/2, HEIGHT - HEIGHT/4)
+    end
+    
+    
+    
+    
+    
+    if sceneTimer > 200 and sceneTimer < 700 then
+            time:draw()
+    end
+    
+    if sceneTimer > 800 and sceneTimer < 1200 then
+            finalQ1:draw()
+    end
+    
+    if sceneTimer == 1300 then 
+        pause = true
+        finalQ2:draw()
+        
+        if(CurrentTouch.state==BEGAN) then
+        response =  question:touched(CurrentTouch)
+        
+        if response == "yes" then
+            pause = false
+            print("yes")
+            end
+        if response == "no" then
+            pause = false
+            print("no")
+            end
+        end
+    end
+        
+    if response == "yes" then
+        
+    
+    
+        if sceneTimer >= 1450 and sceneTimer < 1950 then
+            finalQ3y:draw()  
+            showCodea = true
+        end
+        
+    end
+    
+    if response == "no" then
+        drawDroppingBox = true
+    
+    
+        if sceneTimer >= 1550 and sceneTimer < 2050 then
+            finalQ3n:draw()  
+            --showCodea = true
+        end
+        
+        if sceneTimer >= 2100 then
+            
+        font("Georgia")
+        fill(255)
+        fontSize(20)
+        textWrapWidth(400)
+        textMode(CENTER)     
+        text("The End.", WIDTH/2, HEIGHT - HEIGHT/4)
+        text("You're so close to the real ending. Try one more time.",WIDTH/2, HEIGHT - HEIGHT/4-50)
+        text("Many thanks to all those who helped make the competiton happen and the codea app work", WIDTH/2, HEIGHT - HEIGHT/4-125)
+        end
+        droppingBoxTimer = droppingBoxTimer + 8
+        
+        if (HEIGHT-droppingBoxTimer < 164) then
+            droppingBoxY = 164
+            droppingBoxTimer = 2000
+        end
+        
+    end
+    
+    
+    
+    
+   -- sprite("Platformer Art:Block Grass", i*53-35,35
+
+    cloudX = cloudX - 1
+    cloudX2 = cloudX2 -1
+    if cloudX < -100 then cloudX = WIDTH+100;end
+    if cloudX2 < -100 then cloudX2 = WIDTH+100;end
+    
+    if pause == false then
+        sceneTimer = sceneTimer + 1
+    end
+    
+end
+    
